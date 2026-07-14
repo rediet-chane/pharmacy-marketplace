@@ -1,0 +1,71 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+{% block page_heading %}Admin Dashboard{% endblock %}
+
+{% block content %}
+  <section class="stats-grid admin-stats">
+    <article class="stat">
+      <span>Total users</span>
+      <strong>{{ stats.totalUsers }}</strong>
+    </article>
+    <article class="stat">
+      <span>Products</span>
+      <strong>{{ stats.products }}</strong>
+    </article>
+    <article class="stat">
+      <span>Orders</span>
+      <strong>{{ stats.orders }}</strong>
+    </article>
+    <article class="stat">
+      <span>Pending KYC</span>
+      <strong>{{ stats.pendingKyc }}</strong>
+    </article>
+    <article class="stat">
+      <span>Subscriptions</span>
+      <strong>{{ stats.activeSubscriptions }}</strong>
+    </article>
+    <article class="stat">
+      <span>Businesses</span>
+      <strong>{{ stats.importers }} / {{ stats.pharmacies }}</strong>
+    </article>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <div>
+        <h2>Pending KYC review</h2>
+        <p>Newest verification requests needing admin review.</p>
+      </div>
+      <a class="button primary" href="{{ url_for('main.admin_kyc_review') }}">Open KYC Review</a>
+    </div>
+
+    {% if pending_requests %}
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Business</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Submitted</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for request in pending_requests %}
+              <tr>
+                <td>{{ request["business_name"] }}</td>
+                <td>{{ request["user_type"] }}</td>
+                <td><span class="status-badge warning-badge">{{ request["status"] }}</span></td>
+                <td>{{ request["submitted_at"] }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p>No pending KYC requests.</p>
+    {% endif %}
+  </section>
+{% endblock %}
+

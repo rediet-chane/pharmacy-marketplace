@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  </head>
+  <body class="login-page admin-login-page">
+    <main class="login-card">
+      <div class="brand login-brand">
+        <span class="brand-mark admin-mark">AD</span>
+        <span>
+          <strong>Marketplace Admin</strong>
+          <small>Platform operations</small>
+        </span>
+      </div>
+
+      <h1>Admin Login</h1>
+      <p>Use the seeded administrator account to manage verification, users, products, and subscriptions.</p>
+
+      {% if admin %}
+        <div class="demo-account">
+          <span>Demo account</span>
+          <strong>{{ admin["username"] }}</strong>
+          <small>Password: Admin123!</small>
+          <small>Role: {{ admin["role"] }}</small>
+        </div>
+      {% endif %}
+
+      <a class="button primary full-width" href="{{ url_for('main.admin_dashboard') }}">
+        Continue as Admin
+      </a>
+    </main>
+  </body>
+</html>
+

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Pharmacy Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar pharmacy-sidebar">
+        <a class="brand" href="{{ url_for('main.pharmacy_dashboard') }}">
+          <span class="brand-mark">PM</span>
+          <span>
+            <strong>Pharmacy Marketplace</strong>
+            <small>Pharmacy workspace</small>
+          </span>
+        </a>
+        <nav class="nav">
+          <a href="{{ url_for('main.pharmacy_dashboard') }}">Overview</a>
+          <a href="{{ url_for('main.pharmacy_products_page') }}">Browse Products</a>
+          <a class="muted-link" href="#">Quote Requests</a>
+          <a class="muted-link" href="#">Suppliers</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Verified pharmacy</p>
+            <h1>{% block page_heading %}Dashboard{% endblock %}</h1>
+          </div>
+          {% if pharmacy %}
+            <div class="account-chip">
+              <span>{{ pharmacy["business_name"] }}</span>
+              <strong>{{ pharmacy["verification_status"] }}</strong>
+            </div>
+          {% endif %}
+        </header>
+
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>
+

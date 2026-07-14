@@ -1,0 +1,47 @@
+{% extends "admin_base.html" %}
+
+{% block title %}User Management{% endblock %}
+{% block page_heading %}User Management{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-header compact">
+      <h2>Business accounts</h2>
+      <p>{{ users|length }} user{{ "" if users|length == 1 else "s" }}</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Business</th>
+            <th>Type</th>
+            <th>Verification</th>
+            <th>Account</th>
+            <th>Created</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+            <tr>
+              <td>{{ user["business_name"] }}</td>
+              <td>{{ user["user_type"] }}</td>
+              <td><span class="status-badge status-{{ user['verification_status']|lower }}">{{ user["verification_status"] }}</span></td>
+              <td><span class="status-badge status-{{ user['account_status']|lower }}">{{ user["account_status"] }}</span></td>
+              <td>{{ user["created_at"] }}</td>
+              <td class="action-cell">
+                {% if user["account_status"] == "SUSPENDED" %}
+                  <button class="button small-button admin-action" data-endpoint="/api/admin/suspend-user" data-user-type="{{ user['user_type'] }}" data-user-id="{{ user['id'] }}" data-action="REACTIVATE" type="button">Reactivate</button>
+                {% else %}
+                  <button class="button small-button danger-button admin-action" data-endpoint="/api/admin/suspend-user" data-user-type="{{ user['user_type'] }}" data-user-id="{{ user['id'] }}" data-action="SUSPEND" type="button">Suspend</button>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endblock %}
+

@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Importer Subscription{% endblock %}
+{% block page_heading %}Subscription{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-header">
+      <div>
+        <h2>Current plan</h2>
+        <p>Feature access and catalog limits are based on your active subscription tier.</p>
+      </div>
+      <div class="account-chip">
+        <span>{{ entitlements.planName }}</span>
+        <strong>{{ product_count }} / {{ entitlements.listingLimit or "Unlimited" }} products</strong>
+      </div>
+    </div>
+
+    <div class="entitlement-grid">
+      <article class="stat">
+        <span>Product limit</span>
+        <strong>{{ entitlements.listingLimit or "Unlimited" }}</strong>
+      </article>
+      <article class="stat">
+        <span>Analytics</span>
+        <strong>{{ entitlements.analyticsLevel }}</strong>
+      </article>
+      <article class="stat">
+        <span>Priority support</span>
+        <strong>{{ "Yes" if entitlements.prioritySupport else "No" }}</strong>
+      </article>
+      <article class="stat">
+        <span>Dedicated support</span>
+        <strong>{{ "Yes" if entitlements.dedicatedSupport else "No" }}</strong>
+      </article>
+      <article class="stat">
+        <span>API access</span>
+        <strong>{{ "Yes" if entitlements.apiAccess else "No" }}</strong>
+      </article>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header compact">
+      <h2>Plans</h2>
+      <p>Choose the right tier for your importer catalog.</p>
+    </div>
+
+    <div class="plans-grid">
+      {% for plan in plans %}
+        <article class="plan-card">
+          <div>
+            <h3>{{ plan["name"] }}</h3>
+            <p class="plan-price">{{ plan["price_monthly"] }} ETB <span>/ month</span></p>
+          </div>
+          <ul class="feature-list">
+            <li>{{ plan["listing_limit"] or "Unlimited" }} products</li>
+            <li>{{ plan["analytics_level"] }} analytics</li>
+            <li>{{ "Priority support" if plan["priority_support"] else "Standard support" }}</li>
+            {% if plan["dedicated_support"] %}<li>Dedicated support</li>{% endif %}
+            {% if plan["api_access"] %}<li>API access</li>{% endif %}
+          </ul>
+          <button class="button primary subscription-checkout" data-plan-id="{{ plan['id'] }}" type="button">
+            {{ "Activate" if plan["price_monthly"] == 0 else "Pay with Chapa" }}
+          </button>
+          <p class="quote-message" data-plan-message="{{ plan['id'] }}"></p>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header compact">
+      <h2>Payment activity</h2>
+      <p>{{ transactions|length }} transaction{{ "" if transactions|length == 1 else "s" }}</p>
+    </div>
+
+    {% if transactions %}
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Plan</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Reference</th>
+              <th>Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for transaction in transactions %}
+              <tr>
+                <td>{{ transaction["plan_name"] }}</td>
+                <td>{{ transaction["amount"] }} ETB</td>
+                <td><span class="status-badge status-{{ transaction['status']|lower }}">{{ transaction["status"] }}</span></td>
+                <td>{{ transaction["tx_ref"] }}</td>
+                <td>{{ transaction["created_at"] }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p>No payment activity yet.</p>
+    {% endif %}
+  </section>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/subscription.js') }}"></script>
+{% endblock %}
+

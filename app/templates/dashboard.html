@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Importer Dashboard{% endblock %}
+{% block page_heading %}Importer Dashboard{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-header">
+      <div>
+        <h2>Catalog readiness</h2>
+        <p>Add products to make them discoverable by verified pharmacy buyers.</p>
+      </div>
+      <a class="button primary" href="{{ url_for('main.importer_products_page') }}">Manage Products</a>
+    </div>
+  </section>
+
+  <section class="stats-grid">
+    <article class="stat">
+      <span>Verification</span>
+      <strong>{{ importer["verification_status"] if importer else "UNKNOWN" }}</strong>
+    </article>
+    <article class="stat">
+      <span>Catalog</span>
+      <strong>Ready</strong>
+    </article>
+    <article class="stat">
+      <span>Orders</span>
+      <strong>Coming soon</strong>
+    </article>
+  </section>
+{% endblock %}
+

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Pharmacy Marketplace{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="{{ url_for('main.importer_dashboard') }}">
+          <span class="brand-mark">PM</span>
+          <span>
+            <strong>Pharmacy Marketplace</strong>
+            <small>Importer workspace</small>
+          </span>
+        </a>
+        <nav class="nav">
+          <a href="{{ url_for('main.importer_dashboard') }}">Overview</a>
+          <a href="{{ url_for('main.importer_products_page') }}">Products</a>
+          <a class="muted-link" href="#">Inventory</a>
+          <a class="muted-link" href="#">Orders</a>
+          <a href="{{ url_for('main.importer_subscription_page') }}">Subscription</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Verified importer</p>
+            <h1>{% block page_heading %}Dashboard{% endblock %}</h1>
+          </div>
+          {% if importer %}
+            <div class="account-chip">
+              <span>{{ importer["business_name"] }}</span>
+              <strong>{{ importer["verification_status"] }}</strong>
+            </div>
+          {% endif %}
+        </header>
+
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

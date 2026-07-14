@@ -1,0 +1,53 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Product Moderation{% endblock %}
+{% block page_heading %}Product Moderation{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-header compact">
+      <h2>Marketplace products</h2>
+      <p>{{ products|length }} product{{ "" if products|length == 1 else "s" }}</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Importer</th>
+            <th>Batch</th>
+            <th>Expiry</th>
+            <th>Status</th>
+            <th>Moderation</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for product in products %}
+            <tr>
+              <td>
+                <strong>{{ product["name"] }}</strong><br>
+                <span class="muted-text">{{ product["brand"] }}</span>
+              </td>
+              <td>
+                {{ product["importer_business_name"] }}<br>
+                <span class="status-badge inline-badge">{{ product["importer_verification_status"] }}</span>
+              </td>
+              <td>{{ product["batch_number"] }}</td>
+              <td>{{ product["expiry_date"] }}</td>
+              <td>{{ product["status"] }}</td>
+              <td><span class="status-badge status-{{ product['moderation_status']|lower }}">{{ product["moderation_status"] }}</span></td>
+              <td class="action-cell">
+                <button class="button small-button admin-action" data-endpoint="/api/admin/approve-product" data-product-id="{{ product['id'] }}" data-action="APPROVE" type="button">Approve</button>
+                <button class="button small-button warning-button admin-action" data-endpoint="/api/admin/approve-product" data-product-id="{{ product['id'] }}" data-action="FLAG" type="button">Flag</button>
+                <button class="button small-button danger-button admin-action" data-endpoint="/api/admin/approve-product" data-product-id="{{ product['id'] }}" data-action="REJECT" type="button">Reject</button>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endblock %}
+

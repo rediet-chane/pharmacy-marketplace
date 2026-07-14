@@ -1,0 +1,83 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Subscriptions{% endblock %}
+{% block page_heading %}Subscriptions{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-header compact">
+      <h2>Subscription plans</h2>
+      <p>{{ plans|length }} plan{{ "" if plans|length == 1 else "s" }}</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Plan</th>
+            <th>User type</th>
+            <th>Monthly price</th>
+            <th>Listing limit</th>
+            <th>Features</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for plan in plans %}
+            <tr>
+              <td>{{ plan["name"] }}</td>
+              <td>{{ plan["user_type"] }}</td>
+              <td><input class="compact-input" data-price-for="{{ plan['id'] }}" type="number" min="0" value="{{ plan['price_monthly'] }}"></td>
+              <td><input class="compact-input" data-limit-for="{{ plan['id'] }}" type="number" min="0" value="{{ plan['listing_limit'] or '' }}" placeholder="Unlimited"></td>
+              <td>
+                {{ plan["analytics_level"] }} analytics<br>
+                <span class="muted-text">
+                  {% if plan["priority_support"] %}Priority support{% else %}Standard support{% endif %}
+                  {% if plan["dedicated_support"] %}, dedicated support{% endif %}
+                  {% if plan["api_access"] %}, API access{% endif %}
+                </span>
+              </td>
+              <td>{{ "Active" if plan["is_active"] else "Inactive" }}</td>
+              <td>
+                <button class="button small-button plan-update" data-plan-id="{{ plan['id'] }}" type="button">Save</button>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header compact">
+      <h2>Subscription signups</h2>
+      <p>{{ subscriptions|length }} subscriber{{ "" if subscriptions|length == 1 else "s" }}</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Business</th>
+            <th>Type</th>
+            <th>Plan</th>
+            <th>Status</th>
+            <th>Started</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for subscription in subscriptions %}
+            <tr>
+              <td>{{ subscription["business_name"] or subscription["user_id"] }}</td>
+              <td>{{ subscription["user_type"] }}</td>
+              <td>{{ subscription["plan_name"] }}</td>
+              <td><span class="status-badge status-{{ subscription['status']|lower }}">{{ subscription["status"] }}</span></td>
+              <td>{{ subscription["started_at"] }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endblock %}

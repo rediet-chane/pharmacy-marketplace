@@ -1,0 +1,42 @@
+{% extends "pharmacy_base.html" %}
+
+{% block title %}Browse Products{% endblock %}
+{% block page_heading %}Browse Products{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-header">
+      <div>
+        <h2>Verified importer catalog</h2>
+        <p>Search active products listed by approved pharmaceutical importers.</p>
+      </div>
+    </div>
+
+    <form class="search-bar" id="product-search-form">
+      <label>
+        Search products
+        <input id="product-search" name="search" type="search" placeholder="Search by product name or brand">
+      </label>
+      <button class="button primary" type="submit">Search</button>
+      <button class="button" id="clear-search" type="button">Clear</button>
+    </form>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header compact">
+      <h2>Available products</h2>
+      <p id="marketplace-product-count">Loading...</p>
+    </div>
+
+    <div class="product-grid" id="marketplace-products">
+      <article class="product-card">
+        <p>Loading products...</p>
+      </article>
+    </div>
+  </section>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/pharmacy-products.js') }}"></script>
+{% endblock %}
+

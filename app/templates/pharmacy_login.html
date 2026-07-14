@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pharmacy Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  </head>
+  <body class="login-page">
+    <main class="login-card">
+      <div class="brand login-brand">
+        <span class="brand-mark">PM</span>
+        <span>
+          <strong>Pharmacy Marketplace</strong>
+          <small>Pharmacy buyer access</small>
+        </span>
+      </div>
+
+      <h1>Pharmacy Login</h1>
+      <p>Use the approved demo pharmacy account to browse verified importer products.</p>
+
+      {% if pharmacy %}
+        <div class="demo-account">
+          <span>Demo account</span>
+          <strong>{{ pharmacy["business_name"] }}</strong>
+          <small>Status: {{ pharmacy["verification_status"] }}</small>
+        </div>
+      {% endif %}
+
+      <a class="button primary full-width" href="{{ url_for('main.pharmacy_dashboard') }}">
+        Continue as Unity Pharmacy PLC
+      </a>
+    </main>
+  </body>
+</html>
+

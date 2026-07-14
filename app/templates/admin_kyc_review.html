@@ -1,0 +1,44 @@
+{% extends "admin_base.html" %}
+
+{% block title %}KYC Review{% endblock %}
+{% block page_heading %}KYC Review{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-header compact">
+      <h2>Business verification requests</h2>
+      <p>{{ requests|length }} request{{ "" if requests|length == 1 else "s" }}</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Business</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Submitted</th>
+            <th>Reviewed</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for request in requests %}
+            <tr>
+              <td>{{ request["business_name"] }}</td>
+              <td>{{ request["user_type"] }}</td>
+              <td><span class="status-badge status-{{ request['status']|lower }}">{{ request["status"] }}</span></td>
+              <td>{{ request["submitted_at"] }}</td>
+              <td>{{ request["reviewed_at"] or "Not reviewed" }}</td>
+              <td class="action-cell">
+                <button class="button small-button admin-action" data-endpoint="/api/admin/verify-user" data-user-type="{{ request['user_type'] }}" data-user-id="{{ request['user_id'] }}" data-decision="APPROVED" type="button">Approve</button>
+                <button class="button small-button danger-button admin-action" data-endpoint="/api/admin/verify-user" data-user-type="{{ request['user_type'] }}" data-user-id="{{ request['user_id'] }}" data-decision="REJECTED" type="button">Reject</button>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endblock %}
+

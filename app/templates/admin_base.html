@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Admin Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  </head>
+  <body>
+    <div class="app-shell admin-shell">
+      <aside class="sidebar admin-sidebar">
+        <a class="brand" href="{{ url_for('main.admin_dashboard') }}">
+          <span class="brand-mark admin-mark">AD</span>
+          <span>
+            <strong>Marketplace Admin</strong>
+            <small>Platform operations</small>
+          </span>
+        </a>
+        <nav class="nav">
+          <a href="{{ url_for('main.admin_dashboard') }}">Overview</a>
+          <a href="{{ url_for('main.admin_kyc_review') }}">KYC Review</a>
+          <a href="{{ url_for('main.admin_users') }}">Users</a>
+          <a href="{{ url_for('main.admin_products') }}">Products</a>
+          <a href="{{ url_for('main.admin_subscriptions') }}">Subscriptions</a>
+        </nav>
+      </aside>
+
+      <main class="content admin-content">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Administrator</p>
+            <h1>{% block page_heading %}Dashboard{% endblock %}</h1>
+          </div>
+          {% if admin %}
+            <div class="account-chip">
+              <span>{{ admin["username"] }}</span>
+              <strong>{{ admin["role"] }}</strong>
+            </div>
+          {% endif %}
+        </header>
+
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>
+

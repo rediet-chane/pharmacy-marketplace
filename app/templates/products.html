@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Importer Products{% endblock %}
+{% block page_heading %}Products{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-header">
+      <div>
+        <h2>Product catalog</h2>
+        <p>Manage products available to verified pharmacy buyers.</p>
+      </div>
+      <button class="button primary" id="open-product-form" type="button">Add Product</button>
+    </div>
+
+    <form class="product-form hidden" id="product-form">
+      <div class="form-grid">
+        <label>
+          Product name
+          <input name="name" type="text" minlength="2" maxlength="150" required placeholder="Amoxicillin 500mg Capsules">
+          <small data-error-for="name"></small>
+        </label>
+
+        <label>
+          Brand
+          <input name="brand" type="text" minlength="2" maxlength="100" required placeholder="Amoxil">
+          <small data-error-for="brand"></small>
+        </label>
+
+        <label>
+          Batch number
+          <input name="batchNumber" type="text" minlength="2" maxlength="80" required placeholder="AMX-2026-001">
+          <small data-error-for="batchNumber"></small>
+        </label>
+
+        <label>
+          Expiry date
+          <input name="expiryDate" type="date" required>
+          <small data-error-for="expiryDate"></small>
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button class="button" id="cancel-product-form" type="button">Cancel</button>
+        <button class="button primary" type="submit">Save Product</button>
+      </div>
+      <p class="form-message" id="form-message" role="status"></p>
+    </form>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header compact">
+      <h2>Current products</h2>
+      <p id="product-count">Loading...</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Batch</th>
+            <th>Expiry</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="products-table-body">
+          <tr>
+            <td colspan="5">Loading products...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/products.js') }}"></script>
+{% endblock %}
+

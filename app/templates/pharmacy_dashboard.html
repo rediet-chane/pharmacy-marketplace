@@ -1,0 +1,73 @@
+{% extends "pharmacy_base.html" %}
+
+{% block title %}Pharmacy Dashboard{% endblock %}
+{% block page_heading %}Pharmacy Dashboard{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-header">
+      <div>
+        <h2>Procurement workspace</h2>
+        <p>Browse products from verified importers and request quotes for needed stock.</p>
+      </div>
+      <a class="button primary" href="{{ url_for('main.pharmacy_products_page') }}">Browse Products</a>
+    </div>
+  </section>
+
+  <section class="stats-grid">
+    <article class="stat">
+      <span>Verification</span>
+      <strong>{{ pharmacy["verification_status"] if pharmacy else "UNKNOWN" }}</strong>
+    </article>
+    <article class="stat">
+      <span>Marketplace</span>
+      <strong>Verified importers</strong>
+    </article>
+    <article class="stat">
+      <span>Quotes</span>
+      <strong>{{ quote_requests|length }}</strong>
+    </article>
+  </section>
+
+  <section class="panel history-panel">
+    <div class="panel-header compact">
+      <h2>Quote request history</h2>
+      <p>{{ quote_requests|length }} request{{ "" if quote_requests|length == 1 else "s" }}</p>
+    </div>
+
+    {% if quote_requests %}
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Importer</th>
+              <th>Status</th>
+              <th>Message</th>
+              <th>Requested</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for quote in quote_requests %}
+              <tr>
+                <td>
+                  <strong>{{ quote.productName }}</strong><br>
+                  <span class="muted-text">{{ quote.productBrand }}</span>
+                </td>
+                <td>
+                  {{ quote.importerBusinessName }}<br>
+                  <span class="status-badge inline-badge">{{ quote.importerVerificationStatus }}</span>
+                </td>
+                <td>{{ quote.status }}</td>
+                <td>{{ quote.message or "No message" }}</td>
+                <td>{{ quote.createdAt }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p>No quote requests yet.</p>
+    {% endif %}
+  </section>
+{% endblock %}
